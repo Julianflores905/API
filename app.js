@@ -57,15 +57,48 @@ books.push(newbook);
 res
 })
 
+app.put('/api/books/:id',(req,res)=>{
+    const id = parseInt(req.params.id);
+    const {title, author} = req.body;
 
+    const book = books.find(b=> b.id === id);
 
+    if (!book){
+        return res.status(404).json({
+            message: 'No encontrado'
+        });
+    }
+    
+    book.title = title;
+    book.author = author;
+
+    res.json(book);
+});
+
+app.delete('/api/books/:id', (req, res)=> {
+const id = parseInt(req.params.id);
+
+const index = books.findIndex(b => b.id === id);
+
+if (index === -1){
+    return res.status(404).json({
+        message: 'No encontrado'
+    });
+}
+
+    books.splice(index,1);
+
+    res.json({
+    message:'eliminado'
+    });
+ 
+});
 
 
 
 app.get('/',(req,res)=>{
     res.send('API funcionando!')
 });
-
 
 
 app.get('/',(req,res) =>{
